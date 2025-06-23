@@ -21,7 +21,7 @@ const activitySchema: Schema = new Schema({
   systolicBloodPressure: { type: Number, required: true }, // Optional field with default value
   diastolicBloodPressure: { type: Number, required: true }, // Optional field
   date: { type: Date, default: Date.now },
-  createdBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }
+  createdBy: { type: mongoose.Schema.Types.ObjectId,requuired:true , ref: 'User' }
 });
 
 export default mongoose.model<IActivity>('Activity', activitySchema);
