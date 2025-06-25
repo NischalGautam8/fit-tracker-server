@@ -12,12 +12,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getActivities = exports.addActivity = void 0;
+exports.getActivityById = exports.deleteActivity = exports.getActivities = exports.addActivity = void 0;
 const Activity_1 = __importDefault(require("../models/Activity"));
 // Add a new activity
 const addActivity = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const newActivity = new Activity_1.default(req.body);
+        const newActivity = new Activity_1.default(Object.assign({}, req.body));
         const savedActivity = yield newActivity.save();
         res.status(201).json(savedActivity);
     }
@@ -37,3 +37,31 @@ const getActivities = (req, res) => __awaiter(void 0, void 0, void 0, function* 
     }
 });
 exports.getActivities = getActivities;
+const deleteActivity = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const activityId = req.params.id;
+        const deletedActivity = yield Activity_1.default.findByIdAndDelete(activityId);
+        if (!deletedActivity) {
+            return res.status(404).json({ message: "Activity not found" });
+        }
+        res.status(200).json({ message: "Activity deleted successfully" });
+    }
+    catch (err) {
+        res.status(500).json({ message: err.message });
+    }
+});
+exports.deleteActivity = deleteActivity;
+const getActivityById = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const activityId = req.params.id;
+        const activity = yield Activity_1.default.findById(activityId);
+        if (!activity) {
+            return res.status(404).json({ message: "Activity not found" });
+        }
+        res.json(activity);
+    }
+    catch (err) {
+        res.status(500).json({ message: err.message });
+    }
+});
+exports.getActivityById = getActivityById;

@@ -8,4 +8,6 @@ const activityController_1 = require("../controllers/activityController");
 const router = express_1.default.Router();
 router.post('/', activityController_1.addActivity);
 router.get('/', activityController_1.getActivities);
+router.delete('/:id', activityController_1.deleteActivity);
+router.get('/:id', activityController_1.getActivityById);
 exports.default = router;
