@@ -12,6 +12,7 @@ export const registerUser = async (req: Request, res: Response) => {
 
     // Create a new user
     const newUser = new User({
+      username:req.body.username,
       name: req.body.name,
       email: req.body.email,
       password: hashedPassword,
@@ -28,7 +29,7 @@ export const registerUser = async (req: Request, res: Response) => {
 // Login user
 export const loginUser = async (req: Request, res: Response) => {
   try {
-    // Find the user
+    // Find the userby email or username
     const user = await User.findOne({ email: req.body.email });
     if (!user) {
       return res.status(400).json({ message: "User not found" });
@@ -47,3 +48,12 @@ export const loginUser = async (req: Request, res: Response) => {
     res.status(500).json({ message: err.message });
   }
 };
+export const getUserById=async(req:Request,res:Response)=>{
+  try{
+    const user=await User.findById(req.params.id)
+    res.json(user)
+  }catch(err:any){
+    console.log(err.message);
+    res.status(500).send("Server Error");
+  }
+}

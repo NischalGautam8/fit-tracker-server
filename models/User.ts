@@ -8,6 +8,11 @@ interface IUser extends Document {
 }
 
 const userSchema = new Schema({
+  username: {
+    type: String,
+    required: true,
+    trim: true,
+  },
   name: {
     type: String,
     required: true,
