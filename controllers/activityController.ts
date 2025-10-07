@@ -45,3 +45,12 @@ export const getActivityById = async (req: Request, res: Response) => {
     res.status(500).json({ message: err.message });
   }
 };
+
+export const deleteAllActivities = async (req: Request, res: Response) => {
+  try {
+    await Activity.deleteMany({});
+    res.status(200).json({ message: "All activities deleted successfully" });
+  } catch (err: any) {
+    res.status(500).json({ message: err.message });
+  }
+};
