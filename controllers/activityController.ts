@@ -54,3 +54,31 @@ export const deleteAllActivities = async (req: Request, res: Response) => {
     res.status(500).json({ message: err.message });
   }
 };
+
+export const getActivitiesByDays = async (req: Request, res: Response) => {
+  try {
+    const days = parseInt(req.params.days);
+    
+    if (isNaN(days) || days <= 0) {
+      return res.status(400).json({ message: "Days must be a positive number" });
+    }
+
+    // Calculate the date N days ago
+    const dateThreshold = new Date();
+    dateThreshold.setDate(dateThreshold.getDate() - days);
+
+    // Find activities from the past N days
+    const activities = await Activity.find({
+      date: { $gte: dateThreshold }
+    }).sort({ date: -1 }); // Sort by date descending (newest first)
+
+    res.json({
+      days,
+      dateFrom: dateThreshold,
+      count: activities.length,
+      activities
+    });
+  } catch (err: any) {
+    res.status(500).json({ message: err.message });
+  }
+};
